@@ -59,8 +59,7 @@ else:
         st.subheader("Logoff")
     with col2:
         if st.button("Sair"):
-            st.session_state.logged_in = False
-            st.session_state.page = "1_🌍Home" 
+            logout()
             st.write("Você foi desconectado. Clique [aqui](#/1_🌍Home) para voltar à página inicial.")
 
 
