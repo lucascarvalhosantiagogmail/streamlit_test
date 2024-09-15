@@ -103,6 +103,7 @@ if is_logged_in():
         logout()
         st.write("Você foi deslogado. Recarregue a página para realizar o login novamente.")
 else:
+    st.logo("https://img1.wsimg.com/isteam/ip/0cdba6f5-2fc0-4aaf-b030-d8df637187a2/blob-46e0c21.png/:/rs=w:134,h:100,cg:true,m/cr=w:134,h:100/qt=q:100/ll")
     st.sidebar.image("Santiago.png", caption="Plataforma de Controle")
     st.title("PLATAFORMA SANTIAGO ENGENHARIA")
     st.header("Seja bem-vindo(a) à nossa Plataforma!")
