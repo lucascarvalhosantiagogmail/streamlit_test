@@ -109,7 +109,7 @@ else:
     password = st.text_input("Senha", type="password")
 
     if st.button("Entrar"):
-        if login_input == "fulano@fulano.com.br" and password == "123456":
+        if login_input == "teste@teste.com.br" and password == "123456":
             login()
             st.markdown(
                 """
@@ -122,4 +122,7 @@ else:
             st.error("E-mail ou senha incorretos. Tente novamente.")
 
 st.divider()
+st.subheader("Entre e visualize as funcionalidades")
+st.subheader("E-mail: teste@teste.com.br")
+st.subheader("Senha: 123456")
 st.sidebar.markdown("Desenvolvido por Santiago Engenharia (https://santiagoengenharia.com)")
