@@ -133,4 +133,7 @@ if st.button("Entrar"):
     else:
         st.error("E-mail ou senha incorretos. Tente novamente.")
 st.divider()
+st.write("Para demonstarar de modo completo a nossa plataforma, disponiblizamos o acesso para visualização")
+st.subheader("E-mail: fulano@fulano.com.br")
+st.write("Senha: 123456")
 st.sidebar.markdown("Desenvolvido por Santiago Engenharia (https://santiagoengenharia.com)")
