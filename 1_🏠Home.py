@@ -121,7 +121,7 @@ else:
             st.error("E-mail ou senha incorretos. Tente novamente.")
 
 st.divider()
-st.subheader("Entre e visualize as funcionalidades")
+st.subheader("Entre com o seguinte login:")
 st.subheader("E-mail: teste@teste.com.br")
 st.subheader("Senha: 123456")
 st.sidebar.markdown("Desenvolvido por Santiago Engenharia (https://santiagoengenharia.com)")
