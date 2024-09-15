@@ -34,11 +34,10 @@ local_storage_script = """
         localStorage.removeItem("logged_in");
     }
 
+    // Atualiza o estado de login ao carregar a página
     document.addEventListener('DOMContentLoaded', (event) => {
         const loggedIn = getLoginState();
-        if (loggedIn) {
-            window.parent.postMessage("logged_in", "*");
-        }
+        window.parent.postMessage(loggedIn ? 'logged_in' : 'logged_out', '*');
     });
 </script>
 """
