@@ -15,11 +15,44 @@ st.set_page_config(
     layout="wide"
 )
 
-#CONTROLE DE LOGIN
+# Função JavaScript para manipular o localStorage
+local_storage_script = """
+<script>
+    function getLoginState() {
+        return localStorage.getItem("logged_in") === "true";
+    }
 
-if not st.session_state.get("logged_in", False):
-    st.subheader("Você precisa fazer login para acessar este menu.")
-    st.subheader("Volte para a página inicial.")
+    function clearLoginState() {
+        localStorage.removeItem("logged_in");
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const loggedIn = getLoginState();
+        if (!loggedIn) {
+            window.parent.postMessage("logged_out", "*");
+        }
+    });
+</script>
+"""
+
+# Incluir o JavaScript no Streamlit
+st.components.v1.html(local_storage_script, height=0)
+
+# Função para verificar se o usuário está logado
+def is_logged_in():
+    return st.session_state.get('logged_in', False)
+
+# Função para limpar o login no localStorage
+def logout():
+    st.session_state['logged_in'] = False
+    st.components.v1.html('<script>clearLoginState();</script>', height=0)
+
+# Verificação de login
+if not is_logged_in():
+    st.subheader("Você precisa fazer login para acessar este menu")
+    st.subheader("Volte para a página inicial")
+    st.stop()  # Interrompe o código se não estiver logado
+
 else:
     col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
     with col1:
@@ -32,7 +65,6 @@ else:
 
 
     path = Path(__file__).parent.parent
-
 
 
     # TÍTULO DA PÁGINA
