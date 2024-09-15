@@ -11,6 +11,63 @@ from pathlib import Path
 path = Path(__file__).parent
 
 
+# CONFIGURAÇÃO DA PÁGINA
+st.set_page_config(
+    page_title="Plataforma Santiago Engenharia",
+    page_icon= "https://img1.wsimg.com/isteam/ip/0cdba6f5-2fc0-4aaf-b030-d8df637187a2/blob-46e0c21.png/:/rs=w:134,h:100,cg:true,m/cr=w:134,h:100/qt=q:100/ll",
+    layout="wide")
+
+# Função JavaScript para manipular o localStorage
+local_storage_script = """
+<script>
+    function getLoginState() {
+        return localStorage.getItem("logged_in") === "true";
+    }
+
+    function setLoginState(value) {
+        localStorage.setItem("logged_in", value);
+    }
+
+    function clearLoginState() {
+        localStorage.removeItem("logged_in");
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const loggedIn = getLoginState();
+        if (loggedIn) {
+            window.parent.postMessage("logged_in", "*");
+        }
+    });
+</script>
+"""
+
+# Incluir o JavaScript no Streamlit
+st.components.v1.html(local_storage_script, height=0)
+
+# Verificar o estado de login no JavaScript
+login_state_js = """
+<script>
+    const isLoggedIn = getLoginState();
+    window.parent.postMessage(isLoggedIn ? 'logged_in' : 'logged_out', '*');
+</script>
+"""
+
+st.components.v1.html(login_state_js, height=0)
+
+# Função para verificar se o usuário está logado
+def is_logged_in():
+    return st.session_state.get('logged_in', False)
+
+# Função para salvar o login no localStorage
+def login():
+    st.session_state['logged_in'] = True
+    st.components.v1.html('<script>setLoginState(true);</script>', height=0)
+
+# Função para limpar o login no localStorage
+def logout():
+    st.session_state['logged_in'] = False
+    st.components.v1.html('<script>clearLoginState();</script>', height=0)
+
 # CARREGAR OS DADOS DA PLANILHA
 
 if "data" not in st.session_state:
@@ -22,43 +79,45 @@ if "data" not in st.session_state:
     
 else:
     df_data = st.session_state["data"]
-    
 
-# CONFIGURAÇÃO DA PÁGINA
-st.set_page_config(
-    page_title="Plataforma Santiago Engenharia",
-    page_icon= "https://img1.wsimg.com/isteam/ip/0cdba6f5-2fc0-4aaf-b030-d8df637187a2/blob-46e0c21.png/:/rs=w:134,h:100,cg:true,m/cr=w:134,h:100/qt=q:100/ll",
-    layout="wide")
+# Verificar estado de login
+if is_logged_in():
+        
+    # LOGO
 
-# LOGO
+    st.sidebar.image("Santiago.png", caption="Plataforma de Controle")
 
-st.sidebar.image("Santiago.png", caption="Plataforma de Controle")
+    # TÍTULO
 
-# TÍTULO
+    st.title("PLATAFORMA SANTIAGO ENGENHARIA")
+    st.logo("https://img1.wsimg.com/isteam/ip/0cdba6f5-2fc0-4aaf-b030-d8df637187a2/blob-46e0c21.png/:/rs=w:134,h:100,cg:true,m/cr=w:134,h:100/qt=q:100/ll")
 
-st.title("PLATAFORMA SANTIAGO ENGENHARIA")
-st.logo("https://img1.wsimg.com/isteam/ip/0cdba6f5-2fc0-4aaf-b030-d8df637187a2/blob-46e0c21.png/:/rs=w:134,h:100,cg:true,m/cr=w:134,h:100/qt=q:100/ll")
+    st.divider()
 
-st.divider()
+    # TEXTO
 
-# TEXTO
+    st.header("Seja bem-vindo(a) à nossa Plataforma!")
 
-st.header("Seja bem-vindo(a) à nossa Plataforma!")
-st.subheader("Para acesso às funcionalidades, faça o seu login.")
-st.divider()
+    if st.button("Logout"):
+        logout()
+        st.write("Você foi deslogado. Recarregue a página para realizar o login novamente.")
+else:
+    st.title("PLATAFORMA SANTIAGO ENGENHARIA")
+    st.header("Seja bem-vindo(a) à nossa Plataforma!")
+    st.subheader("Para acesso às funcionalidades, faça o seu login.")
+    st.divider()
 
 st.subheader("Login:")
 
 # DADOS PARA O LOGIN
 
-login = st.text_input("E-mail")
+login_input = st.text_input("E-mail")
 password = st.text_input("Senha", type="password")
 
 
 if st.button("Entrar"):
-    if login =="fulano@fulano.com.br" and password == "123456":
-        st.session_state.logged_in=True
-        st.session_state.page = "2_📆Controle"
+    if login_input =="fulano@fulano.com.br" and password == "123456":
+        login()
         st.markdown(
             """
             <div style='text-align: center;'>
@@ -69,7 +128,6 @@ if st.button("Entrar"):
             unsafe_allow_html=True
         )
         st.session_state.page = "1_🌍Home"    
-    
     else:
         st.error("E-mail ou senha incorretos. Tente novamente.")
 st.divider()
