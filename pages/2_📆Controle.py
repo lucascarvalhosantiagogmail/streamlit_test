@@ -60,7 +60,7 @@ else:
     with col2:
         if st.button("Sair"):
             logout()
-            st.write("Você foi desconectado. Clique [aqui](#/1_🌍Home) para voltar à página inicial.")
+            st.write("Você foi desconectado")
 
 
     path = Path(__file__).parent.parent
