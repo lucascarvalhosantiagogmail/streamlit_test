@@ -7,7 +7,6 @@ import matplotlib.image as mpimg
 import plotly.express as px 
 import plotly.graph_objects as go
 from pathlib import Path
-from streamlit_cookies_controller import Cookies
 
 
 
